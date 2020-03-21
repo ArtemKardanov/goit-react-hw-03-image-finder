@@ -89,6 +89,7 @@ export default class App extends Component {
 
         {images.length > 0 && (
           <ImageGallery
+            items={images}
             onChange={this.handleModalUrlChange}
             onModalOpen={this.handleOpenModal}
           >

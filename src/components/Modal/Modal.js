@@ -1,5 +1,6 @@
 import React, { Component, createRef } from 'react';
 import styles from './Modal.module.css';
+import PropTypes from 'prop-types';
 
 export default class Modal extends Component {
   state = {};
@@ -18,7 +19,6 @@ export default class Modal extends Component {
     const { onCloseModal } = this.props;
 
     if (e.code !== 'Escape') return;
-
     onCloseModal();
   };
 
@@ -27,7 +27,6 @@ export default class Modal extends Component {
     const { onCloseModal } = this.props;
 
     if (current && e.target !== current) return;
-
     onCloseModal();
   };
 
@@ -47,3 +46,8 @@ export default class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  src: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};

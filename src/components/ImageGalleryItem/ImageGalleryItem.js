@@ -1,27 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './ImageGalleryItem.module.css';
+import PropTypes from 'prop-types';
 
-export default class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
-  };
+const ImageGalleryItem = ({ items }) => (
+  <>
+    {items.map(({ id, modalURL, url }) => (
+      <li key={id}>
+        <img
+          className={styles.ImageGalleryItemImage}
+          src={url}
+          alt=""
+          srcSet={modalURL}
+        />
+      </li>
+    ))}
+  </>
+);
 
-  render() {
-    const { items } = this.props;
+ImageGalleryItem.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      modalURL: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    }),
+  ),
+};
 
-    return (
-      <>
-        {items.map(({ id, modalURL, url }) => (
-          <li key={id}>
-            <img
-              className={styles.ImageGalleryItemImage}
-              src={url}
-              alt=""
-              srcSet={modalURL}
-            />
-          </li>
-        ))}
-      </>
-    );
-  }
-}
+export default ImageGalleryItem;
