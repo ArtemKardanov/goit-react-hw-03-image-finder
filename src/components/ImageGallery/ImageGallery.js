@@ -21,16 +21,15 @@ export default class ImageGallery extends Component {
     if (e.target === e.currentTarget) return;
 
     onChange(srcset);
+
     onModalOpen();
   };
 
   render() {
-    const { children } = this.props;
-
     return (
       <>
         <ul className={styles.ImageGallery} onClick={this.onChange}>
-          {children}
+          {this.props.children}
         </ul>
       </>
     );
@@ -38,7 +37,7 @@ export default class ImageGallery extends Component {
 }
 
 ImageGallery.propTypes = {
-  items: PropTypes.arrayOf().isRequired,
+  items: PropTypes.array.isRequired,
   children: PropTypes.element.isRequired,
   onModalOpen: PropTypes.func.isRequired,
 };

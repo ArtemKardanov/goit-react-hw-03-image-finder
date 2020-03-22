@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import styles from '../components/App.module.css';
 import Loader from './Loader/Loader';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorNotification from './ErrorNotification/ErrorNotification';
 import imagesApi from '../api/imagesApi/imagesApi';
 import Modal from './Modal/Modal';
@@ -27,17 +27,19 @@ export default class App extends Component {
     error: null,
     isModalOpen: false,
     modalSize: '',
+    imgName: '',
   };
-
-  componentDidMount() {
-    this.fetchImages();
-  }
 
   imagesListQuery = () => {
     imagesApi
       .articlesQuery()
       .then(({ data }) => {
+        if (data.hits.length === 0) {
+          alert('Please try another request.');
+        }
+
         imagesApi.incrementPage();
+
         this.setState(state => ({
           images: [...state.images, ...mapper(data.hits)],
         }));
@@ -53,10 +55,11 @@ export default class App extends Component {
   };
 
   fetchImages = query => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, imgName: query });
     this.clearImages();
 
     imagesApi.resetPage();
+
     imagesApi.searchQuery = query;
 
     this.imagesListQuery();
@@ -80,7 +83,14 @@ export default class App extends Component {
   };
 
   render() {
-    const { images, isLoading, error, isModalOpen, modalSize } = this.state;
+    const {
+      images,
+      isLoading,
+      error,
+      isModalOpen,
+      modalSize,
+      imgName,
+    } = this.state;
 
     return (
       <div className={styles.App}>
@@ -93,12 +103,16 @@ export default class App extends Component {
             onChange={this.handleModalUrlChange}
             onModalOpen={this.handleOpenModal}
           >
-            <ImageGalleryItem items={images} />
+            <ImageGalleryItem items={images} alt={imgName} />
           </ImageGallery>
         )}
         {isLoading && <Loader />}
         {isModalOpen && (
-          <Modal onCloseModal={this.handleCloseModal} src={modalSize} />
+          <Modal
+            onCloseModal={this.handleCloseModal}
+            src={modalSize}
+            alt={imgName}
+          />
         )}
         {images.length > 0 && <Button onChange={this.handleLoadMore} />}
       </div>

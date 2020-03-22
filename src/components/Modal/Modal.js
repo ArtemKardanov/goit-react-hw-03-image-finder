@@ -16,22 +16,21 @@ export default class Modal extends Component {
   }
 
   handleKeyPress = e => {
-    const { onCloseModal } = this.props;
-
     if (e.code !== 'Escape') return;
-    onCloseModal();
+
+    this.props.onCloseModal();
   };
 
   handleBackdropClick = e => {
     const { current } = this.backdropRef;
-    const { onCloseModal } = this.props;
 
     if (current && e.target !== current) return;
-    onCloseModal();
+
+    this.props.onCloseModal();
   };
 
   render() {
-    const { src } = this.props;
+    const { src, alt } = this.props;
 
     return (
       <div
@@ -40,14 +39,19 @@ export default class Modal extends Component {
         onClick={this.handleBackdropClick}
       >
         <div className={styles.Modal}>
-          <img src={src} alt="" />
+          <img src={src} alt={alt} />
         </div>
       </div>
     );
   }
 }
 
+Modal.defaultProps = {
+  alt: 'some image',
+};
+
 Modal.propTypes = {
+  alt: PropTypes.string,
   src: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
