@@ -1,22 +1,13 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '15651675-34a5d56e7ceea037b075b1fd1';
-const Request_Type = 'image_type=photo&orientation=horizontal&per_page=12';
 
 export default {
   page: 1,
   query: '',
   articlesQuery() {
     return axios.get(
-      BASE_URL +
-        '?q=' +
-        this.query +
-        '&page=' +
-        this.page +
-        '&key=' +
-        API_KEY +
-        Request_Type,
+      `https:pixabay.com/api/?q=${this.query}&page=${this.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`,
     );
   },
 
